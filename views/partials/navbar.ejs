@@ -1,0 +1,37 @@
+<nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark py-3">
+    <div class="container-fluid">
+        <a class="navbar-brand"><i class="fa fa-life-ring"></i> Stadium Scout</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
+            aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <div class="navbar-nav">
+                <a class="nav-link" href="/">Home</a>
+                <a class="nav-link <%= typeof(pageName) !== " undefined" && pageName==="stadiums" ? "active" : "" %>"
+                    href="/stadiums">Stadiums</a>
+                <a class="nav-link <%= typeof(pageName) !== " undefined" && pageName==="newStadium" ? "active" : "" %>"
+                    href="/stadiums/new">New Stadium</a>
+                <a class="nav-link <%= typeof(pageName) !== " undefined" && pageName==="stadiumsMap" ? "active" : "" %>"
+                    href="/stadiums/map">Stadiums Map</a>
+            </div>
+            <div class="navbar-nav ml-auto">
+                <% if(!currentUser) {%>
+                    <a class="nav-link <%= typeof(pageName) !== " undefined" && pageName==="login" ? "active" : "" %>"
+                        href="/login">Login</a>
+                    <a class="nav-link <%= typeof(pageName) !== " undefined" && pageName==="register" ? "active" : ""
+                        %>" href="/register">Register</a>
+                    <% } else {%>
+                        <li class="nav-item">
+                            <a class="nav-link <%= typeof(pageName) !== " undefined" && pageName==="userProfile"
+                                ? "active" : "" %>" href="/users/<%= currentUser._id %>"> <img class="avatarImageNavBar"
+                                        src="<%= currentUser.avatarImage[0].url %>">
+                                    <%= currentUser.username%>
+                            </a>
+                        </li>
+                        <a class="nav-link" href="/logout">Logout</a>
+                        <% } %>
+            </div>
+        </div>
+    </div>
+</nav>

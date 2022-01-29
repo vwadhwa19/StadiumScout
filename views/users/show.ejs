@@ -1,0 +1,62 @@
+<% layout('layouts/boilerplate')%>
+    <h1 class="text-center">
+        <%= user.firstName +' '+ user.lastName%>
+    </h1>
+    <div class=" row">
+        <div class="col-6">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <img class="avatarImageUserProfile" src=" <%=user.avatarImage[0].url%>" alt="">
+                    <h5 class="card-title">
+                        <%= user.firstName +' '+ user.lastName%>
+                    </h5>
+                    <p class="card-text">
+                        <%= user.bio%>
+                    </p>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><b>Email:</b>
+                        <%= user.email%>
+                    </li>
+                    <li class="list-group-item"><b>Username:</b>
+                        <%= user.username%>
+                    </li>
+                    <li class="list-group-item"><b>Number of Stadiums:</b>
+                        <%= stadiums.length%>
+                    </li>
+                </ul>
+                <% if( (currentUser && currentUser.isAdmin) || (currentUser && user._id.equals(currentUser._id)))
+                    {%>
+                    <div class="card-body">
+                        <a class="card-link btn btn-info" href="/users/<%=user._id%>/edit">Edit</a>
+                        <form class="d-inline" action="/users/<%=user._id%>?_method=DELETE" method="POST">
+                            <button class="btn btn-danger">Delete</button>
+                        </form>
+                    </div>
+                    <% } %>
+                        <div class="card-footer text-muted">
+                            Profile last updated <%= moment(user.createdAt).fromNow() %> on <%= (user.createdAt.getMonth()+1) + "/" +
+                                    user.createdAt.getDate() + "/" + user.createdAt.getFullYear()%>
+                        </div>
+            </div>
+        </div>
+
+    <div class="col-6">
+
+    <div class="float-right">
+        <h3>Stadiums by <%= user.username %></h3>
+
+            <% if(stadiums.length < 1){ %>
+                <p id="userProfile-stadiums-none">This user has published no stadiums!</p>
+                <% } else{ %>
+                    <ul id="userProfile-stadiums-list" class="list-group">
+                        <% stadiums.forEach(function(stadium){ %>
+                            <li class="list-group-item CG-list-item"><a id="user-camps"
+                                    href="/stadiums/<%= stadium._id %>">
+                                    <%= stadium.title %>
+                                </a></li>
+                            <% }); %>
+                    </ul>
+                    <% } %>
+        </div>
+        </div>

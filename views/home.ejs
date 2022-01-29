@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stadium Scout</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css"
+        integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous">
+    <link rel="stylesheet" href="/stylesheets/home.css">
+    <link rel="icon" href="newName.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="/stylesheets/images/favicon.ico" type="image/x-icon" />
+</head>
+
+<body class="body">
+    <div class="videoContainer">
+        <video class="videoPlayer" autoplay loop muted playsinline>
+            <source src="/stylesheets/images/homeVideo.mp4" type="video/mp4">
+        </video>
+    </div>
+
+    <div class="title">
+        <h1><b>Welcome to Stadium Scout!</b></h1>
+        <a href="/stadiums" class="btn btn-lg btn-primary font-weight-bold border-white bg-grey">All
+            Stadiums</a>
+        <% if(!currentUser) {%>
+            <a href="/login" class="btn btn-lg btn-primary font-weight-bold border-white bg-grey">Login</a>
+            <a href="/register" class="btn btn-lg btn-primary font-weight-bold border-white bg-grey">Register</a>
+            <% } else {%>
+                <a href="/logout" class="btn btn-lg btn-primary font-weight-bold border-white bg-grey">Logout</a>
+                <% } %>
+
+    </div>
+
+</body>
+
+</html>

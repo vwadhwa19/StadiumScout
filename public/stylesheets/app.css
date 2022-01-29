@@ -1,0 +1,186 @@
+/* Cluster Map Index Formatting */
+#cluster-map {
+    width: 100%;
+    height: 500px;
+}
+
+/* Map on each stadium*/
+#map {
+    width: 100%;
+    height: 300px;
+	margin-bottom: 2.2em;
+}
+
+html {
+	position: relative;
+	min-height: 100%;
+	box-sizing: border-box;
+}
+body {
+	background-color: rgb(121, 137, 165);
+	margin-bottom: 60px;
+}
+
+.jumbotronStadiumIndex {
+	background-repeat: no-repeat;
+	background-image: url("/stylesheets/images/stadiumJumbotron.jpg");
+	height: 320px;
+	background-size: cover;
+	text-align: center;
+}
+
+
+.stadiumIndexJumbotronText{
+	font-weight: 500;
+	color: white;
+	text-align: center;
+	margin: 0;
+	padding: 0px;
+	color: white;
+	text-shadow: 2px 2px 10px black;
+}
+
+.addStadiumButtonMainPage{
+	margin-top:20px;
+	margin-bottom:20px;
+}
+
+.stadiumSearchTextResult{
+	text-align: center;
+	margin: auto;
+	padding: 0px;
+	color:white;
+}
+
+.stadiumSearchMapTextResult{
+	color:black;
+}
+
+.noMatch{
+	margin-top:50px;
+}
+
+.homeSearchBar{
+	margin-left:auto;
+    margin-right:auto;
+	width:50%;
+	
+}
+
+.nav-link {
+    padding: 0.25rem 0;
+    font-weight: 700;
+    color: rgba(255,255,255,0.5);
+    margin-left: 1rem;
+}
+
+.nav-link:hover{
+    color: rgba(255,255,255,0.5);
+    border-bottom-color:rgba(255,255,255,0.5);
+	text-decoration:underline
+}
+
+.nav-link.active {
+    color: white;
+    border-bottom-color:white;
+	text-decoration:underline
+}
+
+#userProfile-stadiums-list {
+	border: 2px solid black;
+	width: 100%;
+	margin-bottom: 80px;
+
+}
+
+#userProfile-stadiums-none {
+	width: 100%;
+	margin-bottom: 80px;
+	font-size: 1.2rem;
+}
+
+.marginBottomEachPage{
+	margin-bottom:80px;
+}
+
+.avatarImageNavBar  {
+	height: 20px;
+	width: 20px;
+	border-radius: 50%;
+}
+
+.avatarImage {
+	height: 20px;
+	width: 20px;
+	border-radius: 50%;
+}
+
+.avatarImageUserProfile {
+	height: 200px;
+	width: 200px;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+h1 {
+	font-size: 3em;
+	line-height: 2em;
+	margin-top: -.5em;
+} 
+
+.loginRegisterBox{
+	margin-top: 1.5em;
+	text-align:center;
+}
+
+.loginRegisterBoxText{
+	margin-top: auto;
+	margin-bottom: auto;
+}
+
+.btn-primary {
+	background-image: linear-gradient(to bottom,#337ab7 0,#265a88 100%);
+	border-color: #245580; 
+	box-shadow: none!important; 
+}
+
+.btn-primary:hover{
+	background-image: linear-gradient(to bottom,#276ba7 0,#2466a0 100%);
+	border-color: #245580; 
+}
+
+.btn-primary:focus,.btn-primary:active {
+	background-image: linear-gradient(to bottom,#337ab7 0,#265a88 100%);
+	border-color: #245580; 
+	box-shadow: none!important; 
+}
+
+.ratingChartImage{
+	height: 224px;
+	width: 500px;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	max-width: 100%;
+}
+
+.newStadiumSubmitButton{
+	margin-top:40px;
+}
+
+.stadiumUpdateButton{
+	margin-top:40px;
+}
+
+.userProfileUpdateButton{
+	margin-top:40px;
+}
+
+.pagination{
+	margin-top:40px;
+}
+
+.footerText{
+	color:#fff;
+}

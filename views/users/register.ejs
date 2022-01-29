@@ -1,0 +1,94 @@
+<% layout('layouts/boilerplate')%>
+    <h1 class="text-center">Register for Stadium Scout</h1>
+    <div class="container d-flex justify-content-center align-items-center mt-5">
+        <div class="row">
+            <div class=" col-md-6 offset-md-3 col-xl-4 offset-xl-4">
+                <div class="card shadow">
+                    <img src="/stylesheets/images/registerImage.jpg" alt="" class="card-img-top" />
+                    <div class="card-body">
+                        <h5 class="card-title" style="text-align:center">Enter registration information</h5>
+                        <form action="/register" method="POST" novalidate class="validated-form"
+                            enctype="multipart/form-data">
+                            <div class="mb-3">
+                                <label class="form-label" for="username">Username</label>
+                                <input class="form-control" type="text" id="username" name="username"
+                                    placeholder="Enter username" required>
+                                <div class="invalid-feedback">
+                                    Please enter a username!
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label" for="password">Password</label>
+                                <input class="form-control" type="password" id="password" name="password"
+                                    placeholder="Enter password" required>
+                                <div class="invalid-feedback">
+                                    Please enter a password!
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label" for="firstName">First Name</label>
+                                <input class="form-control" type="firstName" id="firstName" name="firstName"
+                                    placeholder="Enter first name" required>
+                                <div class="invalid-feedback">
+                                    Please enter a first name!
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label" for="lastName">Last Name</label>
+                                <input class="form-control" type="lastName" id="lastName" name="lastName"
+                                    placeholder="Enter last name" required>
+                                <div class="invalid-feedback">
+                                    Please enter a last name!
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label" for="email">Email</label>
+                                <input class="form-control" type="email" id="email" name="email"
+                                    placeholder="Enter email" required>
+                                <div class="invalid-feedback">
+                                    Please enter a valid email!
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label" for="bio">Bio</label>
+                                <textarea rows="5" class="form-control" type="bio" id="bio" name="bio"
+                                    placeholder="Enter bio" required></textarea>
+                                <div class="invalid-feedback">
+                                    Please enter a bio! (it can be a short bio)
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="form-file custom-file">
+                                    <input type="file" class="form-file-input" id="avatarImage" name="avatarImage"
+                                        required>
+                                    <label class="form-file-label" for="avatarImage">
+                                        <span class="form-file-text custom-file-label">Choose avatar...</span>
+                                        <span class="form-file-button">Browse</span>
+                                    </label>
+                                    <div class="invalid-feedback">
+                                        Please upload an image avator! (it can be any avator)
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label" for="adminCode">Admin Code (Only if you are
+                                    admin of this website)</label>
+                                <input class="form-control" type="adminCode" id="adminCode" name="adminCode"
+                                    placeholder="Enter admin code (only if admin)">
+                            </div>
+                            <button class="btn btn-success btn-block">Register</button>
+                        </form>
+                    </div>
+
+                </div>
+                <div class="card shadow loginRegisterBox">
+                    <div class="card-body align-items-center d-flex justify-content-center">
+                        <p class="loginRegisterBoxText">Already have an account?
+                            <a class="btn btn-primary" href="/login">Login</a>
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>

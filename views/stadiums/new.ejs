@@ -1,0 +1,58 @@
+<% layout('layouts/boilerplate')%>
+    <h1 class="text-center">Add new stadium</h1>
+    <div class="col-md-6 offset-md-3">
+        <div class="card shadow">
+            <div class="card-body">
+                <form action="/stadiums" method="POST" novalidate class="validated-form" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label class="form-label" for="title"><b>Stadium Title</b></label>
+                        <input class="form-control" type="text" id="title" name="stadium[title]"
+                            placeholder="Enter stadium title" required>
+                        <div class="invalid-feedback">
+                            Please enter a title!
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="location"><b>Stadium Location</b></label>
+                        <input class="form-control" type="text" id="location" name="stadium[location]"
+                            placeholder="Enter stadium location" required>
+                        <div class="invalid-feedback">
+                            Please enter a location!
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="title"><b>Stadium Capacity</b></label>
+                        <input class="form-control" type="text" id="capcity" name="stadium[capacity]"
+                            placeholder="Enter stadium capacity" required>
+                        <div class="invalid-feedback">
+                            Please enter a capacity!
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="description"><b>Stadium Description</b></label>
+                        <textarea class="form-control" type="text" id="description" name="stadium[description]"
+                            placeholder="Enter stadium description" required></textarea>
+                        <div class="invalid-feedback">
+                            Please enter a description!
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="form-file custom-file">
+                            <input type="file" class="form-file-input" id="image" name="image" multiple required>
+                            <label class="form-file-label" for="image">
+                                <span class="form-file-text custom-file-label"><b>Choose stadium
+                                        image(s)...</b></span>
+                                <span class="form-file-button">Browse</span>
+                            </label>
+                            <div class="invalid-feedback">
+                                Please upload a stadium image! (minimum 1)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3 newStadiumSubmitButton">
+                        <button class="btn btn-success" style="margin: 0 auto; display: block;">Add Stadium</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>

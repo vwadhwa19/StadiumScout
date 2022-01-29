@@ -1,0 +1,141 @@
+<% layout('layouts/boilerplate')%>
+    <div class="container">
+        <header id="header" class="jumbotronStadiumIndex">
+            <div class="containerjumbatron">
+                <h1 class="display-3 stadiumIndexJumbotronText"> Welcome To Stadium Scout!</h1>
+                <h4 class="display-10 stadiumIndexJumbotronText">Check out stadium and venues from all over the world
+                </h4>
+                <form class="addStadiumButtonMainPage">
+                    <button class="btn btn-primary" style="margin: 0 auto; display: block;"
+                        formaction="/stadiums/new">Add New Stadium
+                    </button>
+                </form>
+                <div class="homeSearchBar">
+                    <form action="/stadiums" method="GET" class="form-inline">
+                        <div class="input-group mb-3">
+                            <input type="text" name="search" class="form-control form-control-lg"
+                                placeholder="Stadium Search...">
+                            <button type="submit" class="input-group-text btn-success"><i class="bi bi-search me-2"></i>
+                                Search</button>
+                        </div>
+                    </form>
+                </div>
+                    <%if(search===false){ %>
+                        <h5 class="text-center stadiumSearchTextResult"><b>Number of stadiums: <%=count %></b>
+                        </h5>
+                    <%}else{ %>
+                        <h5 class="text-center stadiumSearchTextResult"><b>Number of stadiums from the search '<%=search%>': <%=count %></b>
+                        </h5>
+                    <%} %>
+            </div>
+        </header>
+        <div class="row text-center">
+            <% if(search===false && count===0) { %>
+                <h5 class="noMatch">
+                    No stadiums exist on the website!
+                </h5>
+                <% } %>
+            <% if(noMatch !==null) { %>
+                <h5 class="noMatch">
+                    <%= noMatch %>
+                </h5>
+                <% } %>
+                    <% for (let stadium of stadiums) {%>
+                        <div class="col-md-3 col-sm-6 my-3">
+                            <div class="card border-secondary mb-3 card bg-light mb-3">
+                                <img class="img-fluid" alt=""
+                                    src="<%= stadium.images.length>0 ? stadium.images[0].url : ''%>">
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        <%=stadium.title%>
+                                    </h5>
+                                    <p class="card-text">
+                                        <small class="text-muted">
+                                            <%=stadium.location%>
+                                        </small>
+                                    </p>
+                                    <a class="btn btn-primary" href="/stadiums/<%=stadium._id%>">View
+                                        <%=stadium.title%>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <% }%>
+
+        </div>
+        <div clas="pagination">
+            <nav aria-label="page navigation">
+                <% if (pages && pages> 0) { %>
+                    <ul class="pagination justify-content-center">
+                        <% if (current==1) { %>
+                            <li class="page-item disabled"><a class="page-link">First</a></li>
+                            <% } else { %>
+                                <li><a class="page-link"
+                                        href="/stadiums<%if(search){%>?search=<%=search%><%}%>">First</a>
+                                </li>
+                                <% } %>
+
+                                    <% if (current==1) { %>
+                                        <li class="page-item disabled"><a class="page-link">«</a></li>
+                                        <% } else { %>
+                                            <li><a class="page-link"
+                                                    href="/stadiums?page=<%= Number(current) - 1 %><%if(search){%>&search=<%=search%><%}%>">«</a>
+                                            </li>
+                                            <% } %>
+
+                                                <% var i=(Number(current)> 5 ? Number(current) - 4 : 1) %>
+                                                    <% if (i !==1) { %>
+                                                        <li class="page-item disabled"><a class="page-link">...</a>
+                                                        </li>
+                                                        <% } %>
+                                                            <% for (; i <=(Number(current) + 4) && i <=pages; i++) { %>
+                                                                <% if (i==current) { %>
+                                                                    <li class="active"><a class="page-link">
+                                                                            <%= i %>
+                                                                        </a></li>
+                                                                    <% } else { %>
+                                                                        <li><a class="page-link"
+                                                                                href="/stadiums?page=<%= i %><%if(search){%>&search=<%=search%><%}%>">
+                                                                                <%= i %>
+                                                                            </a></li>
+                                                                        <% } %>
+                                                                            <% if (i==Number(current) + 4 && i < pages)
+                                                                                { %>
+                                                                                <li class="page-item disabled"><a
+                                                                                        class="page-link">...</a>
+                                                                                </li>
+                                                                                <% } %>
+                                                                                    <% } %>
+
+                                                                                        <% if (current==pages) { %>
+                                                                                            <li
+                                                                                                class="page-item disabled">
+                                                                                                <a
+                                                                                                    class="page-link">»</a>
+                                                                                            </li>
+                                                                                            <% } else { %>
+                                                                                                <li><a class="page-link"
+                                                                                                        href="/stadiums?page=<%= Number(current) + 1 %><%if(search){%>&search=<%=search%><%}%>">»</a>
+                                                                                                </li>
+                                                                                                <% } %>
+
+                                                                                                    <% if
+                                                                                                        (current==pages)
+                                                                                                        { %>
+                                                                                                        <li
+                                                                                                            class="page-item disabled">
+                                                                                                            <a
+                                                                                                                class="page-link">Last</a>
+                                                                                                        </li>
+                                                                                                        <% } else { %>
+                                                                                                            <li><a class="page-link"
+                                                                                                                    href="/stadiums?page=<%= pages %><%if(search){%>&search=<%=search%><%}%>">Last</a>
+                                                                                                            </li>
+                                                                                                            <% } %>
+                    </ul>
+                    <% } %>
+            </nav>
+        </div>
+    </div>
