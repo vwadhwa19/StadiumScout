@@ -25,7 +25,7 @@ module.exports.register = catchAsync(async (req, res, next) => {
 
         req.login(registeredUser, err => {
             if (err) return next(err);
-            req.flash('success', 'Welcome to Stadium Scout ' + username + '!');
+            req.flash('success', 'Welcome to Stadium Dev ' + username + '!');
             res.redirect('/stadiums');
         })
     } catch (e) {
@@ -138,7 +138,7 @@ module.exports.renderLoginForm = (req, res) => {
 // Submit login page
 module.exports.login = (req, res) => {
     const username = req.body.username;
-    req.flash('success', 'Welcome back to Stadium Scout ' + username + '!');
+    req.flash('success', 'Welcome back to Stadium Dev ' + username + '!');
     const redirectUrl = req.session.returnTo || '/stadiums';
     delete req.session.returnTo;
     res.redirect(redirectUrl);
