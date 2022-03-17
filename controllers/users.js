@@ -69,7 +69,6 @@ module.exports.renderUserProfileEditForm = catchAsync(async (req, res) => {
 module.exports.updateUserProfile = catchAsync(async (req, res) => {
     const { userId } = req.params;
     const user = await User.findById(userId);
-    console.log(user);
     if (!user) {
         req.flash('error', 'Cannot find that user profile!');
         return res.redirect('/stadiums');
@@ -105,8 +104,7 @@ module.exports.deleteUserProfilePage = catchAsync(async (req, res) => {
     const user = await User.findById(userId);
     const userStadiums = await Stadium.find().where("author").equals(user._id);
     const userReviews = await Review.find().where("author").equals(user._id);
-
-
+    
     try {
         for (let stadium of userStadiums) {
             for (let image of stadium.images) {

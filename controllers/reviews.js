@@ -5,8 +5,8 @@ const catchAsync = require('../utils/catchAsync');
 
 // Create a review
 module.exports.createReview = catchAsync(async (req, res) => {
-    const { stadiumId } = req.params;
     try {
+        const { stadiumId } = req.params;
         const stadium = await Stadium.findById(stadiumId);
         const review = new Review(req.body.review);
         review.author = req.user._id;
@@ -23,8 +23,9 @@ module.exports.createReview = catchAsync(async (req, res) => {
 
 // Delete a review
 module.exports.deleteReview = catchAsync(async (req, res) => {
-    const { stadiumId, reviewId } = req.params;
     try {
+        const { stadiumId, reviewId } = req.params;
+
         await Stadium.findByIdAndUpdate(stadiumId, { $pull: { reviews: reviewId } });
         await Review.findByIdAndDelete(reviewId);
         req.flash('success', 'Succesfully deleted this review!');

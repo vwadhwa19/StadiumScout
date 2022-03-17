@@ -13,9 +13,9 @@ module.exports.renderNewForm = (req, res) => {
 
 // Create new stadium 
 module.exports.createStadium = catchAsync(async (req, res, next) => {
-    const stadium = new Stadium(req.body.stadium);
-    let locationParsed = req.body.stadium.location.replace(/[^a-z\.,]/g, ""); //location sent to mapbox should only contain a-z, comma, and period (no other characters)
     try {
+        const stadium = new Stadium(req.body.stadium);
+        let locationParsed = req.body.stadium.location.replace(/[^a-zA-Z, ]+/g, ' '); //location sent to mapbox should only contain a-z and spaces
         const geoData = await geocoder.forwardGeocode({
             query: locationParsed,
             limit: 1
@@ -32,7 +32,7 @@ module.exports.createStadium = catchAsync(async (req, res, next) => {
         req.flash('success', 'Succesfully created a new stadium!');
         res.redirect(`/stadiums/${stadium._id}`);
     } catch (e) {
-        req.flash('error', "Failed to create the stadium!" + e.message);
+        req.flash('error', "Failed to create the stadium!");
         res.redirect(`/stadiums`);
     }
 });
@@ -65,9 +65,9 @@ module.exports.renderEditForm = catchAsync(async (req, res) => {
 
 // Update a single stadium 
 module.exports.updateStadium = catchAsync(async (req, res) => {
-    const { stadiumId } = req.params;
-    let locationParsed = req.body.stadium.location.replace(/[^a-z\.,]/g, ""); //location sent to mapbox should only contain a-z, comma, and period (no other characters)
     try {
+        const { stadiumId } = req.params;
+        let locationParsed = req.body.stadium.location.replace(/[^a-zA-Z, ]+/g, ' '); //location sent to mapbox should only contain a-z and spaces
         const stadium = await Stadium.findByIdAndUpdate(stadiumId, { ...req.body.stadium });
         const imgs = req.files.map(f => ({ url: f.path, filename: f.filename }));
         stadium.images.push(...imgs);
@@ -76,7 +76,6 @@ module.exports.updateStadium = catchAsync(async (req, res) => {
             query: locationParsed,
             limit: 1
         }).send()
-        console.log(geoData);
         if (geoData.body.features.length > 0)
             stadium.geometry = geoData.body.features[0].geometry;
         else
@@ -98,9 +97,9 @@ module.exports.updateStadium = catchAsync(async (req, res) => {
 
 // Delete a stadium
 module.exports.deleteStadium = catchAsync(async (req, res) => {
-    const { stadiumId } = req.params;
-    const stadium = await Stadium.findById(stadiumId);
     try {
+        const { stadiumId } = req.params;
+        const stadium = await Stadium.findById(stadiumId);
         await Stadium.findByIdAndDelete(stadiumId);
         for (let image of stadium.images) {
             await cloudinary.uploader.destroy(image.filename);
@@ -108,7 +107,7 @@ module.exports.deleteStadium = catchAsync(async (req, res) => {
         req.flash('success', 'Succesfully deleted this stadium!');
         res.redirect('/stadiums');
     } catch (e) {
-        req.flash('error', e.message);
+        req.flash('error', 'Failed to delete this stadium!');
         res.redirect('/stadiums');
     }
 
