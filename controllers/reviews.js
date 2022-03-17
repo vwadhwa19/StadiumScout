@@ -25,7 +25,6 @@ module.exports.createReview = catchAsync(async (req, res) => {
 module.exports.deleteReview = catchAsync(async (req, res) => {
     try {
         const { stadiumId, reviewId } = req.params;
-
         await Stadium.findByIdAndUpdate(stadiumId, { $pull: { reviews: reviewId } });
         await Review.findByIdAndDelete(reviewId);
         req.flash('success', 'Succesfully deleted this review!');
