@@ -46,29 +46,29 @@
                             <% for (let stadium of stadiums) {%>
                                 <div class="col-md-3 col-sm-6 my-3">
                                     <div class="card border-secondary mb-3 card bg-light mb-3">
-                                        <img alt="Stadium"
+                                        <img alt="Stadium" class="img-fluid"
                                             src="<%= stadium.images.length>0 ? stadium.images[0].url : ''%>"
                                             height="200">
                                         <div class="card-body">
                                             <h5 class="card-title">
-                                                <%if(stadium.title.length>= 25){ %>
-                                                    <%=stadium.title.slice(0,24) + "..." %>
+                                                <%if(stadium.title.length>= 50){ %>
+                                                    <%=stadium.title.slice(0,49) + "..." %>
                                                         <%}else{ %>
                                                             <%=stadium.title%>
                                                                 <%} %>
                                             </h5>
                                             <p class="card-text">
                                                 <small class="text-muted">
-                                                    <%if(stadium.location.length>= 30){ %>
-                                                        <%=stadium.location.slice(0,29) + "..." %>
+                                                    <%if(stadium.location.length>= 50){ %>
+                                                        <%=stadium.location.slice(0,49) + "..." %>
                                                             <%}else{ %>
                                                                 <%=stadium.location%>
                                                                     <%} %>
                                                 </small>
                                             </p>
                                             <a class="btn btn-primary" href="/stadiums/<%=stadium._id%>">View
-                                                <%if(stadium.title.length>= 25){ %>
-                                                    <%=stadium.title.slice(0,24) + "..." %>
+                                                <%if(stadium.title.length>= 50){ %>
+                                                    <%=stadium.title.slice(0,49) + "..." %>
                                                         <%}else{ %>
                                                             <%=stadium.title%>
                                                                 <%} %>
