@@ -14,16 +14,17 @@ module.exports.renderNewForm = (req, res) => {
 // Create new stadium 
 module.exports.createStadium = catchAsync(async (req, res, next) => {
     const stadium = new Stadium(req.body.stadium);
+    let locationParsed = req.body.stadium.location.replace(/[^a-z\.,]/g, ""); //location sent to mapbox should only contain a-z, comma, and period (no other characters)
     try {
         const geoData = await geocoder.forwardGeocode({
-            query: req.body.stadium.location,
+            query: locationParsed,
             limit: 1
         }).send()
 
-        if(geoData.body.features.length>0)
-        stadium.geometry = geoData.body.features[0].geometry;
+        if (geoData.body.features.length > 0)
+            stadium.geometry = geoData.body.features[0].geometry;
         else
-        stadium.geometry = { type: 'Point', coordinates: [ -97.9222112121185, 39.3812661305678 ] };  // default to USA if user gives invalid location 
+            stadium.geometry = { type: 'Point', coordinates: [-97.9222112121185, 39.3812661305678] };  // default to USA if user gives invalid location 
 
         stadium.images = req.files.map(f => ({ url: f.path, filename: f.filename }));
         stadium.author = req.user._id;
@@ -31,8 +32,7 @@ module.exports.createStadium = catchAsync(async (req, res, next) => {
         req.flash('success', 'Succesfully created a new stadium!');
         res.redirect(`/stadiums/${stadium._id}`);
     } catch (e) {
-        console.log(e);
-        req.flash('error', "Failed to create the stadium!" + e.message );
+        req.flash('error', "Failed to create the stadium!" + e.message);
         res.redirect(`/stadiums`);
     }
 });
@@ -66,19 +66,21 @@ module.exports.renderEditForm = catchAsync(async (req, res) => {
 // Update a single stadium 
 module.exports.updateStadium = catchAsync(async (req, res) => {
     const { stadiumId } = req.params;
+    let locationParsed = req.body.stadium.location.replace(/[^a-z\.,]/g, ""); //location sent to mapbox should only contain a-z, comma, and period (no other characters)
     try {
         const stadium = await Stadium.findByIdAndUpdate(stadiumId, { ...req.body.stadium });
         const imgs = req.files.map(f => ({ url: f.path, filename: f.filename }));
         stadium.images.push(...imgs);
         stadium.createdAt = Date.now();
         const geoData = await geocoder.forwardGeocode({
-            query: req.body.stadium.location,
+            query: locationParsed,
             limit: 1
         }).send()
-        if(geoData.body.features.length>0)
-        stadium.geometry = geoData.body.features[0].geometry;
+        console.log(geoData);
+        if (geoData.body.features.length > 0)
+            stadium.geometry = geoData.body.features[0].geometry;
         else
-        stadium.geometry = { type: 'Point', coordinates: [ -97.9222112121185, 39.3812661305678 ] };  // default to USA if user gives invalid location
+            stadium.geometry = { type: 'Point', coordinates: [-97.9222112121185, 39.3812661305678] };  // default to USA if user gives invalid location
         if (req.body.deleteImages) {
             for (let filename of req.body.deleteImages) {
                 await cloudinary.uploader.destroy(filename);

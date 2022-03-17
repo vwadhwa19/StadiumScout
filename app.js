@@ -142,7 +142,7 @@ app.get('/stadiums/:stadiumId/reviews', stadiums.renderStadiumReviewsPage);
 app.get('/register', users.renderRegisterForm);
 
 // Create new user
-app.post('/register', upload.array('avatarImage'), users.register);
+app.post('/register', users.register, upload.array('avatarImage'));
 
 // Render user profile page 
 app.get('/users/:userId', users.renderUserProfilePage);
@@ -151,7 +151,7 @@ app.get('/users/:userId', users.renderUserProfilePage);
 app.get('/users/:userId/edit', isLoggedIn, isUserProfileOwner, users.renderUserProfileEditForm);
 
 // Update a user profile 
-app.put('/users/:userId', isLoggedIn, isUserProfileOwner, upload.array('avatarImage'), users.updateUserProfile);
+app.put('/users/:userId', isLoggedIn, isUserProfileOwner, users.updateUserProfile, upload.array('avatarImage'));
 
 // Delete user profile page 
 app.delete('/users/:userId', isLoggedIn, isUserProfileOwner, users.deleteUserProfilePage);
