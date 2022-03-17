@@ -20,15 +20,20 @@ module.exports.createStadium = catchAsync(async (req, res, next) => {
             limit: 1
         }).send()
 
+        if(geoData.body.features.length>0)
         stadium.geometry = geoData.body.features[0].geometry;
+        else
+        stadium.geometry = { type: 'Point', coordinates: [ -97.9222112121185, 39.3812661305678 ] };  // default to USA if user gives invalid location 
+
         stadium.images = req.files.map(f => ({ url: f.path, filename: f.filename }));
         stadium.author = req.user._id;
         await stadium.save();
         req.flash('success', 'Succesfully created a new stadium!');
         res.redirect(`/stadiums/${stadium._id}`);
     } catch (e) {
-        req.flash('error', e.message);
-        res.redirect(`/stadiums/${stadium._id}`);
+        console.log(e);
+        req.flash('error', "Failed to create the stadium!" + e.message );
+        res.redirect(`/stadiums`);
     }
 });
 
@@ -66,6 +71,14 @@ module.exports.updateStadium = catchAsync(async (req, res) => {
         const imgs = req.files.map(f => ({ url: f.path, filename: f.filename }));
         stadium.images.push(...imgs);
         stadium.createdAt = Date.now();
+        const geoData = await geocoder.forwardGeocode({
+            query: req.body.stadium.location,
+            limit: 1
+        }).send()
+        if(geoData.body.features.length>0)
+        stadium.geometry = geoData.body.features[0].geometry;
+        else
+        stadium.geometry = { type: 'Point', coordinates: [ -97.9222112121185, 39.3812661305678 ] };  // default to USA if user gives invalid location
         if (req.body.deleteImages) {
             for (let filename of req.body.deleteImages) {
                 await cloudinary.uploader.destroy(filename);
@@ -76,7 +89,7 @@ module.exports.updateStadium = catchAsync(async (req, res) => {
         req.flash('success', 'Succesfully updated this stadium!');
         res.redirect(`/stadiums/${stadiumId}`);
     } catch (e) {
-        req.flash('error', e.message);
+        req.flash('error', "Failed to update the stadium!" + e.message);
         res.redirect(`/stadiums/${stadiumId}`);
     }
 });

@@ -181,6 +181,12 @@ h1 {
 	margin-top:40px;
 }
 
+.stadiumIndexImage{
+	width:"294px"; 
+	height:"200px";
+	border-radius:"2px, 4px 2px"; 
+}
+
 .footerText{
 	color:#fff;
 }

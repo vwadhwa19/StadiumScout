@@ -69,12 +69,15 @@ module.exports.renderUserProfileEditForm = catchAsync(async (req, res) => {
 module.exports.updateUserProfile = catchAsync(async (req, res) => {
     const { userId } = req.params;
     const user = await User.findById(userId);
+    console.log(user);
     if (!user) {
-        req.flash('error', 'Cannot find that user!');
+        req.flash('error', 'Cannot find that user profile!');
         return res.redirect('/stadiums');
     }
     try {
+        user.changePassword(user.password, req.body.password); // update passport.js if a user changes their password to remember authentication
         user.username = req.body.username;
+        user.password = req.body.password;
         user.firstName = req.body.firstName;
         user.lastName = req.body.lastName;
         user.email = req.body.email;
