@@ -8,22 +8,22 @@
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav">
                 <a class="nav-link" href="/">Home</a>
-                <a class="nav-link <%= typeof(pageName) !== " undefined" && pageName==="stadiums" ? "active" : "" %>"
+                <a class="nav-link <%= typeof(pageName) !== "undefined" && pageName==="stadiums" ? "active" : "" %>"
                     href="/stadiums">Stadiums</a>
-                <a class="nav-link <%= typeof(pageName) !== " undefined" && pageName==="newStadium" ? "active" : "" %>"
+                <a class="nav-link <%= typeof(pageName) !== "undefined" && pageName==="newStadium" ? "active" : "" %>"
                     href="/stadiums/new">New Stadium</a>
-                <a class="nav-link <%= typeof(pageName) !== " undefined" && pageName==="stadiumsMap" ? "active" : "" %>"
+                <a class="nav-link <%= typeof(pageName) !== "undefined" && pageName==="stadiumsMap" ? "active" : "" %>"
                     href="/stadiums/map">Stadiums Map</a>
             </div>
             <div class="navbar-nav ml-auto">
                 <% if(!currentUser) {%>
-                    <a class="nav-link <%= typeof(pageName) !== " undefined" && pageName==="login" ? "active" : "" %>"
+                    <a class="nav-link <%= typeof(pageName) !== "undefined" && pageName==="login" ? "active" : "" %>"
                         href="/login">Login</a>
-                    <a class="nav-link <%= typeof(pageName) !== " undefined" && pageName==="register" ? "active" : ""
+                    <a class="nav-link <%= typeof(pageName) !== "undefined" && pageName==="register" ? "active" : ""
                         %>" href="/register">Register</a>
                     <% } else {%>
                         <li class="nav-item">
-                            <a class="nav-link <%= typeof(pageName) !== " undefined" && pageName==="userProfile"
+                            <a class="nav-link <%= typeof(pageName) !== "undefined" && pageName==="userProfile"
                                 ? "active" : "" %>" href="/users/<%= currentUser._id %>"> <img class="avatarImageNavBar"
                                         src="<%= currentUser.avatarImage[0].url %>">
                                     <%= currentUser.username%>

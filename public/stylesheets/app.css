@@ -24,7 +24,7 @@ body {
 .jumbotronStadiumIndex {
 	background-repeat: no-repeat;
 	background-image: url("/stylesheets/images/stadiumJumbotron.jpg");
-	height: 320px;
+	height: 340px;
 	background-size: cover;
 	text-align: center;
 }

@@ -1,7 +1,8 @@
 <% layout('layouts/boilerplate')%>
     <div class="container">
         <header id="header" class="jumbotronStadiumIndex">
-            <div class="containerjumbatron">
+            <div class="container">
+
                 <h1 class="display-3 stadiumIndexJumbotronText"> Welcome To Stadium Dev!</h1>
                 <h4 class="display-10 stadiumIndexJumbotronText">Check out stadium and venues from all over the world
                 </h4>
@@ -20,14 +21,16 @@
                         </div>
                     </form>
                 </div>
-                    <%if(search===false){ %>
-                        <h5 class="text-center stadiumSearchTextResult"><b>Number of stadiums: <%=count %></b>
-                        </h5>
+                <%if(search===false){ %>
+                    <h5 class="text-center stadiumSearchTextResult"><b>Number of stadiums: <%=count %></b>
+                    </h5>
                     <%}else{ %>
-                        <h5 class="text-center stadiumSearchTextResult"><b>Number of stadiums from the search '<%=search%>': <%=count %></b>
+                        <h5 class="text-center stadiumSearchTextResult"><b>Number of stadiums from the search '
+                                <%=search%>': <%=count %></b>
                         </h5>
-                    <%} %>
+                        <%} %>
             </div>
+
         </header>
         <div class="row text-center">
             <% if(search===false && count===0) { %>
@@ -35,33 +38,47 @@
                     No stadiums exist on the website!
                 </h5>
                 <% } %>
-            <% if(noMatch !==null) { %>
-                <h5 class="noMatch">
-                    <%= noMatch %>
-                </h5>
-                <% } %>
-                    <% for (let stadium of stadiums) {%>
-                        <div class="col-md-3 col-sm-6 my-3">
-                            <div class="card border-secondary mb-3 card bg-light mb-3">
-                                <img  alt="Stadium" src="<%= stadium.images.length>0 ? stadium.images[0].url : ''%>" width="294" height="200">
-                                <div class="card-body">
-                                    <h5 class="card-title">
-                                        <%=stadium.title%>
-                                    </h5>
-                                    <p class="card-text">
-                                        <small class="text-muted">
-                                            <%=stadium.location%>
-                                        </small>
-                                    </p>
-                                    <a class="btn btn-primary" href="/stadiums/<%=stadium._id%>">View
-                                        <%=stadium.title%>
-                                    </a>
+                    <% if(noMatch !==null) { %>
+                        <h5 class="noMatch">
+                            <%= noMatch %>
+                        </h5>
+                        <% } %>
+                            <% for (let stadium of stadiums) {%>
+                                <div class="col-md-3 col-sm-6 my-3">
+                                    <div class="card border-secondary mb-3 card bg-light mb-3">
+                                        <img alt="Stadium"
+                                            src="<%= stadium.images.length>0 ? stadium.images[0].url : ''%>"
+                                            height="200">
+                                        <div class="card-body">
+                                            <h5 class="card-title">
+                                                <%if(stadium.title.length>= 25){ %>
+                                                    <%=stadium.title.slice(0,24) + "..." %>
+                                                        <%}else{ %>
+                                                            <%=stadium.title%>
+                                                                <%} %>
+                                            </h5>
+                                            <p class="card-text">
+                                                <small class="text-muted">
+                                                    <%if(stadium.location.length>= 30){ %>
+                                                        <%=stadium.location.slice(0,29) + "..." %>
+                                                            <%}else{ %>
+                                                                <%=stadium.location%>
+                                                                    <%} %>
+                                                </small>
+                                            </p>
+                                            <a class="btn btn-primary" href="/stadiums/<%=stadium._id%>">View
+                                                <%if(stadium.title.length>= 25){ %>
+                                                    <%=stadium.title.slice(0,24) + "..." %>
+                                                        <%}else{ %>
+                                                            <%=stadium.title%>
+                                                                <%} %>
+                                            </a>
 
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
 
-                        <% }%>
+                                <% }%>
 
         </div>
         <div clas="pagination">
