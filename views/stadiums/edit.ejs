@@ -52,12 +52,14 @@
                         </div>
                         <div class="mb-3">
                             <% stadium.images.forEach(function(img, i) { %>
-                                <img src="<%=img.url %>" class="img-thumbnail" alt="Stadium">
                                 <div class="form-check-inline">
                                     <input type="checkbox" id="image-<%=i%>" name="deleteImages[]"
                                         value="<%=img.filename%>">
-                                </div>
                                 <label for="image-<%=i%>">Delete?</label>
+                                </div>
+                                <div>
+                                <img src="<%=img.url %>" class="img-thumbnail" alt="Stadium">
+                            </div>
                                 <% })%>
                         </div>
                         <div class="mb-3 stadiumUpdateButton">

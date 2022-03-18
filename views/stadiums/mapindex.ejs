@@ -31,6 +31,9 @@
     <div id="cluster-map"></div>
     <script>
         const mapToken = '<%-process.env.MAPBOX_TOKEN%>';
-        const stadiums = { features: JSON.parse('<%-JSON.stringify(stadiums)%>') };
+        const stadiums = { features: JSON.parse('<%-JSON.stringify(stadiums).replace(/[\/\(\)\']/g, "&apos;").replace(/\\/g, "");%>') };
+            
+        // First replace ignores single quotes in stringify and second replace removes slashes in stringify as it was causing issues when parsing
+        // const stadiums = { features: JSON.parse('<%-JSON.stringify(stadiums)%>') }; This is the old way we were sending the variable to the showPageMap.js file. It contains all the information abou the stadium. Now we can just send coordinates, title, and location as seen above
     </script>
     <script src="/javascripts/clusterMap.js"></script>
