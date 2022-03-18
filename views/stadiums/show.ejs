@@ -53,8 +53,7 @@
                         <%= stadium.capacity%>
                     </li>
                 </ul>
-                <% if( (currentUser && currentUser.isAdmin) || (currentUser && stadium.author.equals(currentUser._id)))
-                    {%>
+                <% if( (currentUser && currentUser.isAdmin) || (currentUser && stadium.author.equals(currentUser._id))){%>
                     <div class="card-body">
                         <a class="card-link btn btn-info" href="/stadiums/<%=stadium._id%>/edit">Edit</a>
                         <form class="d-inline" action="/stadiums/<%=stadium._id%>?_method=DELETE" method="POST">
