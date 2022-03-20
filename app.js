@@ -7,18 +7,15 @@ const path = require('path');
 const mongoose = require('mongoose');
 const methodOverride = require('method-override');
 const ejsMate = require('ejs-mate');
-const ExpressError = require('./utils/ExpressError');
 const flash = require('connect-flash');
-const { isLoggedIn, isStadiumAuthor, isReviewAuthor, isUserProfileOwner, checkUserReviewMade } = require('./middleware');
-const stadiums = require('./controllers/stadiums');
-const reviews = require('./controllers/reviews');
-const users = require('./controllers/users');
+const indexRoutes = require('./routes/index');
+const stadiumRoutes = require('./routes/stadiums');
+const reviewRoutes = require('./routes/reviews');
+const userRoutes = require('./routes/users');
+const createError = require('http-errors'); 
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const User = require('./models/user');
-const multer = require('multer');
-const { storage } = require('./cloudinary');
-const upload = multer({ storage });
 const mongoSanitize = require('express-mongo-sanitize');
 const session = require('express-session');
 const MongoDBStore = require('connect-mongo');
@@ -105,78 +102,36 @@ app.get('/', (req, res) => {
     res.render('home');
 });
 
-// Render all stadiums page
-app.get('/stadiums', stadiums.searchStadium);
+// Routes for the homepage
+app.use('/', indexRoutes);
 
-// Render new stadium form
-app.get('/stadiums/new', isLoggedIn, stadiums.renderNewForm);
+// Routes for the stadiums
+app.use('/stadiums', stadiumRoutes);
+ 
+// Routes for the reviews
+app.use('/stadiums/:stadiumId/reviews', reviewRoutes); 
 
-// Render stadium map index page
-app.get('/stadiums/map', stadiums.renderMapIndex);
-
-// Create new stadium 
-app.post('/stadiums', isLoggedIn, upload.array('image'), stadiums.createStadium);
-
-// Render a single stadium
-app.get('/stadiums/:stadiumId', stadiums.showStadium);
-
-// Render edit single stadium form
-app.get('/stadiums/:stadiumId/edit', isLoggedIn, isStadiumAuthor, stadiums.renderEditForm);
-
-// Update a single stadium 
-app.put('/stadiums/:stadiumId', isLoggedIn, isStadiumAuthor, upload.array('image'), stadiums.updateStadium);
-
-// Delete a stadium
-app.delete('/stadiums/:stadiumId', isLoggedIn, isStadiumAuthor, stadiums.deleteStadium);
-
-// Create new review
-app.post('/stadiums/:stadiumId/reviews', isLoggedIn, checkUserReviewMade, reviews.createReview);
-
-// Delete a review
-app.delete('/stadiums/:stadiumId/reviews/:reviewId', isLoggedIn, isReviewAuthor, reviews.deleteReview);
-
-// Render reviews for stadium  
-app.get('/stadiums/:stadiumId/reviews', stadiums.renderStadiumReviewsPage);
-
-// Render register form 
-app.get('/register', users.renderRegisterForm);
-
-// Create new user
-app.post('/register', upload.array('avatarImage'), users.register);
-
-// Render user profile page 
-app.get('/users/:userId', users.renderUserProfilePage);
-
-// Render user profile edit form
-app.get('/users/:userId/edit', isLoggedIn, isUserProfileOwner, users.renderUserProfileEditForm);
-
-// Update a user profile 
-app.put('/users/:userId', isLoggedIn, isUserProfileOwner, upload.array('avatarImage'), users.updateUserProfile);
-
-// Delete user profile page 
-app.delete('/users/:userId', isLoggedIn, isUserProfileOwner, users.deleteUserProfilePage);
-
-// Render login form
-app.get('/login', users.renderLoginForm);
-
-// Submit Login page
-app.post('/login', passport.authenticate('local', { failureFlash: true, failureRedirect: '/login' }), users.login);
-
-// Render logout page
-app.get('/logout', users.logout);
+// Routes for the users
+app.use('/users/:userId', userRoutes); 
 
 // Error Handling
 app.all('*', (req, res, next) => {
-    next(new ExpressError('Page Not Found', 404));
+    next(createError(404, 'The resource you requested could not be found.'));
 })
 
 // Error handling
 app.use((err, req, res, next) => {
-    const { statusCode = 500, message = 'Something went wrong' } = err;
-    res.status(statusCode).render('error', { err });
+    if (createError.isHttpError(err)) {
+        res.status(err.statusCode);
+        res.render('error', { err });
+      } else {
+        console.error(err.stack || err.message);
+        res.status(500);
+        res.render('error', { err: createError(500, 'An unexpected server error occured.') });
+      }
 });
 
-// Check local connection
+// Check local evnvironment port connection
 app.listen(port, () => {
     console.log(`serving on port ${port}`)
 });

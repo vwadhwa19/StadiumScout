@@ -2,7 +2,6 @@
 const User = require('../models/user');
 const Stadium = require('../models/stadium');
 const Review = require('../models/review');
-const catchAsync = require('../utils/catchAsync');
 const { cloudinary } = require("../cloudinary");
 const admincode = process.env.ADMIN_CODE;
 
@@ -12,7 +11,7 @@ module.exports.renderRegisterForm = (req, res) => {
 }
 
 // Create new user
-module.exports.register = catchAsync(async (req, res, next) => {
+module.exports.register = async (req, res, next) => {
     try {
         const { username, password, firstName, lastName, email, bio, adminCode } = req.body;
         const user = new User({ username, password, firstName, lastName, email, bio, adminCode });
@@ -38,10 +37,10 @@ module.exports.register = catchAsync(async (req, res, next) => {
             res.redirect('/register');
         }
     }
-});
+};
 
 // Render user profile page
-module.exports.renderUserProfilePage = catchAsync(async (req, res) => {
+module.exports.renderUserProfilePage = async (req, res) => {
 
     const { userId } = req.params;
     const user = await User.findById(userId);
@@ -52,10 +51,10 @@ module.exports.renderUserProfilePage = catchAsync(async (req, res) => {
     }
 
     res.render("users/show", { user: user, stadiums: userStadiums, pageName: 'userProfile' });
-});
+};
 
 // Render edit single stadium form
-module.exports.renderUserProfileEditForm = catchAsync(async (req, res) => {
+module.exports.renderUserProfileEditForm = async (req, res) => {
     const { userId } = req.params;
     const user = await User.findById(userId);
     if (!user) {
@@ -63,10 +62,10 @@ module.exports.renderUserProfileEditForm = catchAsync(async (req, res) => {
         return res.redirect('/stadiums');
     }
     res.render('users/edit', { user, pageName: 'userProfile' });
-});
+};
 
 // Update user profile
-module.exports.updateUserProfile = catchAsync(async (req, res) => {
+module.exports.updateUserProfile = async (req, res) => {
     const { userId } = req.params;
     const user = await User.findById(userId);
     if (!user) {
@@ -74,7 +73,12 @@ module.exports.updateUserProfile = catchAsync(async (req, res) => {
         return res.redirect('/stadiums');
     }
     try {
-        user.changePassword(user.password, req.body.password); // update passport.js if a user changes their password to remember authentication
+        // you will be logged out if username or password was updated
+        let logout = false;
+        if ((user.username !== req.body.username) || (user.password !== req.body.password))
+            logout = true;
+
+        await user.setPassword(req.body.password); // update passport.js if a user changes their password to remember authentication
         user.username = req.body.username;
         user.password = req.body.password;
         user.firstName = req.body.firstName;
@@ -89,22 +93,31 @@ module.exports.updateUserProfile = catchAsync(async (req, res) => {
             user.avatarImage = newUserImage;
         }
         await user.save();
-        req.flash('success', 'Succesfully updated your profile!');
+
+        // you will be logged out if username or password was updated
+        if (logout) {
+            req.logout();
+            req.flash('success', 'Succesfully updated your profile and logged you out as your username and/or password was changed!');
+        }
+        else {
+            req.flash('success', 'Succesfully updated your profile!');
+        }
+
         res.redirect(`/users/${userId}`);
     } catch (e) {
         req.flash('error', e.message);
         res.redirect(`/users/${userId}`);
     }
-});
+};
 
 // Delete user profile
-module.exports.deleteUserProfilePage = catchAsync(async (req, res) => {
+module.exports.deleteUserProfilePage = async (req, res) => {
 
     const { userId } = req.params;
     const user = await User.findById(userId);
     const userStadiums = await Stadium.find().where("author").equals(user._id);
     const userReviews = await Review.find().where("author").equals(user._id);
-    
+
     try {
         for (let stadium of userStadiums) {
             for (let image of stadium.images) {
@@ -129,7 +142,7 @@ module.exports.deleteUserProfilePage = catchAsync(async (req, res) => {
         res.redirect(`/stadiums`);
     }
 
-});
+};
 
 // Render login form 
 module.exports.renderLoginForm = (req, res) => {

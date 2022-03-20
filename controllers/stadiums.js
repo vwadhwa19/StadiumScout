@@ -1,5 +1,4 @@
 const Stadium = require('../models/stadium');
-const catchAsync = require('../utils/catchAsync');
 const { cloudinary } = require("../cloudinary");
 const mbxGeocoding = require("@mapbox/mapbox-sdk/services/geocoding");
 const mapBoxToken = process.env.MAPBOX_TOKEN;
@@ -12,7 +11,7 @@ module.exports.renderNewForm = (req, res) => {
 };
 
 // Create new stadium 
-module.exports.createStadium = catchAsync(async (req, res, next) => {
+module.exports.createStadium = async (req, res, next) => {
     try {
         const stadium = new Stadium(req.body.stadium);
         let locationParsed = req.body.stadium.location.replace(/[^a-zA-Z, ]+/g, ' '); //location sent to mapbox should only contain a-z and spaces
@@ -35,10 +34,10 @@ module.exports.createStadium = catchAsync(async (req, res, next) => {
         req.flash('error', "Failed to create the stadium!");
         res.redirect(`/stadiums`);
     }
-});
+};
 
 // Render a single stadium
-module.exports.showStadium = catchAsync(async (req, res) => {
+module.exports.showStadium = async (req, res) => {
     const stadium = await Stadium.findById(req.params.stadiumId).populate({
         path: 'reviews',
         populate: {
@@ -50,10 +49,10 @@ module.exports.showStadium = catchAsync(async (req, res) => {
         return res.redirect('/stadiums');
     }
     res.render('stadiums/show', { stadium, pageName: 'stadiums' })
-});
+};
 
 // Render edit single stadium form
-module.exports.renderEditForm = catchAsync(async (req, res) => {
+module.exports.renderEditForm = async (req, res) => {
     const { stadiumId } = req.params;
     const stadium = await Stadium.findById(stadiumId);
     if (!stadium) {
@@ -61,10 +60,10 @@ module.exports.renderEditForm = catchAsync(async (req, res) => {
         return res.redirect('/stadiums');
     }
     res.render('stadiums/edit', { stadium, pageName: 'stadiums' });
-});
+};
 
 // Update a single stadium 
-module.exports.updateStadium = catchAsync(async (req, res) => {
+module.exports.updateStadium = async (req, res) => {
     try {
         const { stadiumId } = req.params;
         let locationParsed = req.body.stadium.location.replace(/[^a-zA-Z, ]+/g, ' '); //location sent to mapbox should only contain a-z and spaces
@@ -93,10 +92,10 @@ module.exports.updateStadium = catchAsync(async (req, res) => {
         req.flash('error', "Failed to update the stadium!" + e.message);
         res.redirect(`/stadiums/${stadiumId}`);
     }
-});
+};
 
 // Delete a stadium
-module.exports.deleteStadium = catchAsync(async (req, res) => {
+module.exports.deleteStadium = async (req, res) => {
     try {
         const { stadiumId } = req.params;
         const stadium = await Stadium.findById(stadiumId);
@@ -111,7 +110,7 @@ module.exports.deleteStadium = catchAsync(async (req, res) => {
         res.redirect('/stadiums');
     }
 
-});
+};
 
 // For Fuzzy Search
 function escapeRegex(text) {
@@ -119,7 +118,7 @@ function escapeRegex(text) {
 }
 
 // Render stadium index page with searching
-module.exports.searchStadium = catchAsync(async (req, res) => {
+module.exports.searchStadium = async (req, res) => {
     let perPage = 8;
     let pageQuery = parseInt(req.query.page);
     let pageNumber = pageQuery ? pageQuery : 1;
@@ -166,10 +165,10 @@ module.exports.searchStadium = catchAsync(async (req, res) => {
             });
         });
     }
-});
+};
 
 // Render stadium map page
-module.exports.renderMapIndex = catchAsync(async (req, res) => {
+module.exports.renderMapIndex = async (req, res) => {
     let noMatch = null;
     let search = req.query.search;
     if (req.query.search) {
@@ -205,18 +204,4 @@ module.exports.renderMapIndex = catchAsync(async (req, res) => {
             }
         });
     }
-});
-
-module.exports.renderStadiumReviewsPage = catchAsync(async (req, res) => {
-    const stadium = await Stadium.findById(req.params.stadiumId).populate({
-        path: 'reviews',
-        populate: {
-            path: 'author'
-        }
-    }).populate('author');
-    if (!stadium) {
-        req.flash('error', 'Cannot find reviews for that stadium!');
-        return res.redirect('/stadiums');
-    }
-    res.render("stadiums/reviews", { stadium, pageName: 'stadiums' });
-});
+};
