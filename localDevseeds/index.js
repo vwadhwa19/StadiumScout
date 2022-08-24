@@ -37,12 +37,12 @@ const seedDB = async () => {
             },
             images: [
                 {
-                    url: 'https://res.cloudinary.com/dyafjiehs/image/upload/v1642993226/StadiumScoutDev/unitedDevTest.jpg',
-                    filename: 'StadiumScoutDev/unitedDevTest',
+                    url: 'https://res.cloudinary.com/dyafjiehs/image/upload/v1660445149/StadiumScoutDev/unitedDevTest_zpzuoa.jpg',
+                    filename: 'StadiumScoutDev/unitedDevTest_zpzuoa',
                 },
                 {
-                    url: 'https://res.cloudinary.com/dyafjiehs/image/upload/v1643344826/StadiumScoutDev/unitedDevTest1.jpg',
-                    filename: 'StadiumScoutDev/unitedDevTest1',
+                    url: 'https://res.cloudinary.com/dyafjiehs/image/upload/v1660445151/StadiumScoutDev/unitedDevTest1_trnvqg.jpg',
+                    filename: 'StadiumScoutDev/unitedDevTest1_trnvqg',
                 }
             ]
         })
